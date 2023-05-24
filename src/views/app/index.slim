@@ -1,0 +1,37 @@
+doctype html
+html
+  head
+    title Välkommen
+    link rel="stylesheet" href="/css/index.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  body
+    h1 Välkommen 
+
+    h2 Alla quizer
+  - if @quizzes.empty?
+      p Det finns inga quizer än
+  - else
+      div.cards
+        - @quizzes.each do |quiz|
+          div.card
+            form.like-form action="/app/quiz/like/toggle/#{quiz['id']}" method="post"                
+              - if quiz['is_liked']
+                  button.like-button type="submit" 
+                      i.fa.fa-thumbs-up
+              - else
+                  button.like-button type="submit" 
+                      i.fa.fa-thumbs-o-up
+            h2= quiz['title']
+            p= quiz['description']
+            p = "Anatal likes " + quiz["likes"].to_s
+            p.creator 
+            - if quiz['creator']['id'] == @user['id']
+                a href="/app/quizzes" = quiz['creator']['username']
+            - else                   
+                a href="/app/user/#{quiz['creator']['id']}" = quiz['creator']['username']
+            div.actions
+              a href="/app/quiz/play/#{quiz['id']}" Ta quiz
+              - if @user['role'] == 1
+                a href="/app/quiz/#{quiz['id']}/delete" Ta bort
+                
+

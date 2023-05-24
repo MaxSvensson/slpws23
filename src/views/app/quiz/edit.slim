@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    title Redigera quiz
+  body
+    h1 Redigera quiz
+   
+    p#errors = @errors
+    form action="/app/quiz/edit/#{@quiz['id']}" method="post"
+      input type="hidden" name="quiz_id" value="#{@quiz['id']}"
+      input type="text" id="quiz_name" name="name" placeholder="Namn" value="#{@quiz['title']}"
+      br
+      input type="text" id="quiz_description" name="description" placeholder="Beskrivning" value="#{@quiz['description']}"
+      br
+      
+      - 4.times do |i|
+        - question = @quiz['questions'][i] || {}
+        h4 Fråga #{i+1}
+        div id="question_#{i+1}"
+          input type="hidden" name="questions[#{i}][id]" value="#{question['id']}"
+          label for="questions_#{i}_text" Fråga
+          input type="text" id="questions_#{i}_text" name="questions[#{i}][text]" placeholder="Fråga" value="#{question['text']}"
+          br
+          - 3.times do |j|
+            - option = question['options'] ? question['options'][j] || {} : {}
+            - is_correct = option['is_correct'] ? true : false
+            div id="option_#{j+1}"
+              input type="hidden" name="questions[#{i}][options][#{j}][id]" value="#{option['id']}"
+              label for="questions_#{i}_options_#{j}" Alternativ #{j+1}
+              input type="text" id="questions_#{i}_options_#{j}" name="questions[#{i}][options][#{j}][text]" placeholder="Alternativ" value="#{option['text']}"
+              label for="questions_#{i}_correct_option" Rätt svar
+              input type="radio" id="questions_#{i}_correct_option" name="questions[#{i}][correct_option]" value="#{j}" checked=is_correct
+              br
+      
+      input type="submit" value="Spara"

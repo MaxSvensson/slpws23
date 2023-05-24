@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title Spela quiz
+  body
+    h1= @quiz['title']
+    p= @quiz['description']
+
+    form action="/app/quiz/play/#{@quiz['id']}" method="post"
+      - @quiz['questions'].each_with_index do |question, question_index|
+        h3= "#{question_index + 1}. #{question['text']}"
+        ul
+          - question['options'].each_with_index do |option, option_index|
+            li
+              input type="radio" name="answer[#{question['id']}]" value="#{option['id']}" id="option_#{option['id']}"
+              label for="option_#{option['id']}"= option['text']
+        br
+      input type="submit" value="Få resultat"

@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+    title Create a Quiz
+  body
+    h1 Skapa en quiz
+   
+    p#errors = @errors
+    form action='/quiz/create' method='post'
+      input type='text' id='quiz_name' name='name' placeholder='Namn'
+      br
+      input type='text' id='quiz_description' name='description' placeholder='Beskrivning'
+      br
+      
+      - 4.times do |i|
+        h4 Fråga #{i+1}
+        div id="question_#{i+1}"
+          label for="questions[#{i}][text]" Fråga
+          input type='text' id="questions[#{i}][text]" name="questions[#{i}][text]" placeholder='Fråga'
+          br
+          - 3.times do |j|
+            - p "questions[#{i}][options][#{j}]" 
+            div id="option_#{j+1}"
+              label for="questions[#{i}][options][#{j}]" Alternativ #{j+1}
+              input type='text' id="questions[#{i}][options][#{j}]" name="questions[#{i}][options][#{j}]" placeholder='Alternativ'
+              label for="questions[#{i}][correct_option]" Rätt svar
+              input type="radio" id="questions[#{i}][correct_option]" name="questions[#{i}][correct_option]" value="#{j}"
+              br
+      
+      input type='submit' value='Skicka'

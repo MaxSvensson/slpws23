@@ -1,0 +1,54 @@
+doctype html
+html 
+    head 
+        title Admin panel
+    body
+        h1 Admin panel
+
+        h2 Alla användare
+        - if @users.empty?
+            p Det finns inga användare än
+        - else
+            table.table
+                thead
+                    tr
+                        th Namn
+                        th Email
+                        th Behörighet
+                        
+                tbody
+                    - @users.each_with_index do |user, index|
+                        tr
+                            td= user['username']
+                            td= user['email']
+                            td 
+                                div
+                                    - if user['role'] == "you"
+                                        p Du kan inte ändra din egen behörighet
+                                    - else 
+                                        select data-id="#{user['id']}" name="role" id="role_#{index}"
+                                            - if user['role'] == 1
+                                                option value="1" selected="true" Admin
+                                                option value="0" User
+                                            - else
+                                                option value="1" Admin
+                                                option value="0" selected="true" User
+
+        javascript:
+            function onRoleChange(event, userId) {
+                const role = event.target.value;
+
+                fetch(`/app/admin/user/update-role/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ role })
+                });
+            }
+
+            const userSelects = document.querySelectorAll('[id^="role_"]');
+            userSelects.forEach((select, index) => {
+                const userId = select.dataset.id;
+                select.addEventListener('change', (event) => onRoleChange(event, userId)); 
+            });

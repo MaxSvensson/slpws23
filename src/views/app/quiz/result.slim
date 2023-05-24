@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    title Reultat
+  body
+    h1 Ditt resultata
+    p Antal frågor: #{@total_questions}
+    p Rätta frågor: #{@correct_answers}
+    p Poäng: #{@score_percentage.round(2)}%
+    a href="/app" Gå tillbaka

@@ -1,0 +1,21 @@
+h1 Min quizer
+a href="/app/quiz/create" Skapa en ny quiz
+- if @quizzes.empty?
+  p Du har inga quizer än
+- else
+  table.table
+    thead
+      tr
+        th Namn
+        th Beskrivning
+        th
+        th
+    tbody
+      - @quizzes.each do |quiz|
+        tr
+          td= quiz['title']
+          td= quiz['description']
+          td
+            a href="/app/quiz/edit/#{quiz['id']}" Redigera
+          td
+            a href="/app/quiz/#{quiz['id']}/delete" Ta bort
